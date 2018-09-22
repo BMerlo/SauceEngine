@@ -58,7 +58,7 @@ inline void CheckCPU() {
 	}
 }
 
-inline void mikeCheckHardware()
+inline void CheckHardware()
 	{
 		typedef BOOL(WINAPI *P_GDFSE)(LPCTSTR, PULARGE_INTEGER,
 			PULARGE_INTEGER, PULARGE_INTEGER);
