@@ -1,4 +1,5 @@
 // Hardware checks for engine starts.
+#define _CRT_SECURE_NO_WARNINGS
 #include "HardwareChecks.h"
 #include <Windows.h>
 #include <wchar.h>
@@ -15,30 +16,48 @@ inline void CheckRAM()
 	cout << "Total System Memory: " << (statex.ullTotalPhys / 1024) / 1024 << "MB" << endl;
 
 }
-inline DWORD ReadCPUSpeed() {
-	DWORD BufSize = sizeof(DWORD);
-	DWORD dwMHz;
-	DWORD type = REG_DWORD;
+inline DWORD ReadCPUSpeedFromRegistry(DWORD dwCPU)
+{
 	HKEY hKey;
-	// open the key where the proc speed is hidden:
-	long lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-		L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0",
-		0,
-		KEY_READ,
-		&hKey);
-	if (lError == ERROR_SUCCESS) {
-		// query the key:
-		RegQueryValueEx(hKey,
-			L"MHz",
-			NULL,
-			&type,
-			(LPBYTE)&dwMHz,
-			&BufSize);
-	}
-	cout << "CPU Speed: ~" << dwMHz / 1000000 << "MHz" << endl;
-	return dwMHz;
+	DWORD dwSpeed;
 
+	// Get the key name
+	wchar_t szKey[256];
+	_snwprintf(szKey, sizeof(szKey) / sizeof(wchar_t),
+		L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\%d\\", dwCPU);
+
+	// Open the key
+	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, szKey, 0, KEY_QUERY_VALUE, &hKey) != ERROR_SUCCESS)
+	{
+		return 0;
+	}
+
+	// Read the value
+	DWORD dwLen = 4;
+	if (RegQueryValueEx(hKey, L"~MHz", NULL, NULL, (LPBYTE)&dwSpeed, &dwLen) != ERROR_SUCCESS)
+	{
+		RegCloseKey(hKey);
+		return 0;
+	}
+
+	// Cleanup and return
+	RegCloseKey(hKey);
+	return dwSpeed;
 }
+
+inline void CheckCPU() {
+	SYSTEM_INFO theInfo;
+	GetSystemInfo(&theInfo);
+
+	// Log number of CPUs and speeds
+
+	for (DWORD i = 0; i < theInfo.dwNumberOfProcessors; ++i)
+	{
+		DWORD dwCPUSpeed = ReadCPUSpeedFromRegistry(i);
+		printf("CPU %d speed: ~%dMHz\n", i, dwCPUSpeed);
+	}
+}
+
 inline void mikeCheckHardware()
 	{
 		typedef BOOL(WINAPI *P_GDFSE)(LPCTSTR, PULARGE_INTEGER,
