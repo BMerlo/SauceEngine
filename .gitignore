@@ -31,5 +31,5 @@
 *.out
 *.app
 
-/SauceEngine/Source/.vs/SauceEngine/v15/
+/SauceEngine/Source/.vs/SauceEngine/v15/Browse.VC.db
 *.db
