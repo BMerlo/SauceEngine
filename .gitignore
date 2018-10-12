@@ -46,6 +46,7 @@
 *.lastbuildstate
 Source/.vs/*
 Source/x64/*
+Source/x64/Debug/*
 
 #Newly found files that were uploaded but should not have been:
 Source/.vs/SauceEngine/v15/.suo
