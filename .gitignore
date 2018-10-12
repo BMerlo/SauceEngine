@@ -44,12 +44,31 @@
 *.idb
 *.log
 *.lastbuildstate
+Source/.vs/*
+Source/x64/*
 
 #Newly found files that were uploaded but should not have been:
 Source/.vs/SauceEngine/v15/.suo
 Source/.vs/SauceEngine/v15/Browse.VC.db
 Source/.vs/SauceEngine/v15/ipch/AutoPCH/bc7c6efa18c66d57/HARDWARECHECKS.ipch
 Source/.vs/SauceEngine/v15/ipch/AutoPCH/e081798bb79d041b/SAUCEENGINE.ipch
+Source/x64/Debug/`.exe
+Source/x64/Debug/`.ilk
+Source/x64/Debug/`.pdb
+Source/x64/Debug/`.tlog/`.lastbuildstate
+Source/x64/Debug/`.tlog/CL.command.1.tlog
+Source/x64/Debug/`.tlog/CL.read.1.tlog
+Source/x64/Debug/`.tlog/CL.write.1.tlog
+Source/x64/Debug/`.tlog/link.command.1.tlog
+Source/x64/Debug/`.tlog/link.read.1.tlog
+Source/x64/Debug/`.tlog/link.write.1.tlog
+Source/x64/Debug/`.tlog/unsuccessfulbuild
+Source/x64/Debug/Actor.obj
+Source/x64/Debug/HardwareChecks.obj
+Source/x64/Debug/SauceEngine.log
+Source/x64/Debug/SauceEngine.obj
+Source/x64/Debug/vc141.idb
+Source/x64/Debug/vc141.pdb
 Source/x64/Debug/`.exe
 Source/x64/Debug/`.ilk
 Source/x64/Debug/`.pdb
