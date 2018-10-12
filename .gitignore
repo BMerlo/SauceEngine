@@ -31,6 +31,7 @@
 *.out
 *.app
 
+#Our files we want to ignore
 /SauceEngine/Source/.vs/SauceEngine/v15/Browse.VC.db
 *.db
 *.db
@@ -39,6 +40,12 @@
 *.exe
 *.ilk
 *.pdb
+*.tlog
+*.idb
+*.log
+*.lastbuildstate
+
+#Newly found files that were uploaded but should not have been:
 Source/.vs/SauceEngine/v15/.suo
 Source/.vs/SauceEngine/v15/Browse.VC.db
 Source/.vs/SauceEngine/v15/ipch/AutoPCH/bc7c6efa18c66d57/HARDWARECHECKS.ipch
