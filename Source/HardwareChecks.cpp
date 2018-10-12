@@ -7,7 +7,6 @@
 #include <stdio.h>
 using namespace std;
 
-
 inline void CheckRAM()
 {
 	MEMORYSTATUSEX statex;
@@ -57,8 +56,7 @@ inline void CheckCPU() {
 		printf("CPU %d speed: ~%dMHz\n", i, dwCPUSpeed);
 	}
 }
-
-inline void CheckHardware()
+inline void CheckHDDHardware()
 	{
 		typedef BOOL(WINAPI *P_GDFSE)(LPCTSTR, PULARGE_INTEGER,
 			PULARGE_INTEGER, PULARGE_INTEGER);
