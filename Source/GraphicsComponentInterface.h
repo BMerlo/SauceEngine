@@ -1,5 +1,6 @@
-#pragma once
-class GraphicsComponentInterface
+#include "ActorComponent.h"
+
+class GraphicsComponentInterface : public ActorComponent
 {
 public:
 	GraphicsComponentInterface();

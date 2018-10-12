@@ -1,5 +1,6 @@
-#pragma once
-class Health
+#include "StatsComponent.h"
+
+class Health : public StatsComponent
 {
 public:
 	Health();

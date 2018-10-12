@@ -1,5 +1,6 @@
-#pragma once
-class ActorComponent
+#include "Actor.h"
+
+class ActorComponent : public Actor
 {
 public:
 	ActorComponent();

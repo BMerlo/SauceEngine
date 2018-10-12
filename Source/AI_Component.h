@@ -1,5 +1,6 @@
-#pragma once
-class AI_Component
+#include "ActorComponent.h"
+
+class AI_Component : public ActorComponent
 {
 public:
 	AI_Component();

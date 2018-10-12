@@ -157,10 +157,12 @@
     <ClInclude Include="HardwareChecks.h" />
     <ClInclude Include="Health.h" />
     <ClInclude Include="Mana.h" />
+    <ClInclude Include="MeshCollider.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="PickupsInterface.h" />
+    <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="SpecialAbility.h" />
     <ClInclude Include="StatsComponent.h" />
     <ClInclude Include="Transform.h" />
@@ -174,10 +176,12 @@
     <ClCompile Include="HardwareChecks.cpp" />
     <ClCompile Include="Health.cpp" />
     <ClCompile Include="Mana.cpp" />
+    <ClCompile Include="MeshCollider.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="PickupsInterface.cpp" />
+    <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="SauceEngine.cpp" />
     <ClCompile Include="SpecialAbility.cpp" />
     <ClCompile Include="StatsComponent.cpp" />

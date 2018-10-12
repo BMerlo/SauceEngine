@@ -1,9 +1,8 @@
-// Hardware checks for engine starts.
-
 /*##############################################################################
-#                                                                             #                                                                                                                                                                    #
-# Developed by Boris Merlo, Michael Noseworthy and Peter Tu                   #
-#                                                                             #                                                                                                                                                                  #
+#																			   #
+# Copyright 2018 Sauce Pig All Rights Reserved.					               #
+# Developed by Boris Merlo, Michael Noseworthy and Peter Tu                    #
+#                                                                              #
 ##############################################################################*/
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -14,6 +13,7 @@
 #include <stdio.h>
 using namespace std;
 
+//# Hardware checks for engine starts.
 inline void CheckRAM()
 {
 	MEMORYSTATUSEX statex;

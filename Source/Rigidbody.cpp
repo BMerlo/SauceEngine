@@ -5,13 +5,13 @@
 #                                                                              #
 ##############################################################################*/
 
-#include "SpecialAbility.h"
+#include "Rigidbody.h"
 
-SpecialAbility::SpecialAbility()
+Rigidbody::Rigidbody()
 {
 }
 
 
-SpecialAbility::~SpecialAbility()
+Rigidbody::~Rigidbody()
 {
 }

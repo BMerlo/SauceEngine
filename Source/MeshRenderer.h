@@ -1,5 +1,6 @@
-#pragma once
-class MeshRenderer
+#include "GraphicsComponentInterface.h"
+
+class MeshRenderer : GraphicsComponentInterface
 {
 public:
 	MeshRenderer();

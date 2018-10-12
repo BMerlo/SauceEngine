@@ -1,5 +1,6 @@
-#pragma once
-class PickupsInterface
+#include "ActorComponent.h"
+
+class PickupsInterface : public ActorComponent
 {
 public:
 	PickupsInterface();

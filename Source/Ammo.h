@@ -1,5 +1,6 @@
-#pragma once
-class Ammo
+#include "PickupsInterface.h"
+
+class Ammo : public PickupsInterface
 {
 public:
 	Ammo();

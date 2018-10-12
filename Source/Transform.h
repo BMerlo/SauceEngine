@@ -1,5 +1,6 @@
-#pragma once
-class Transform
+#include "Actor.h"
+
+class Transform : public Actor
 {
 public:
 	Transform();

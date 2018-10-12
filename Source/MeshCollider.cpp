@@ -5,13 +5,13 @@
 #                                                                              #
 ##############################################################################*/
 
-#include "SpecialAbility.h"
+#include "MeshCollider.h"
 
-SpecialAbility::SpecialAbility()
+MeshCollider::MeshCollider()
 {
 }
 
 
-SpecialAbility::~SpecialAbility()
+MeshCollider::~MeshCollider()
 {
 }
