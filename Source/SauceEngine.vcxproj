@@ -150,12 +150,38 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="ActorComponent.h" />
+    <ClInclude Include="AI_Component.h" />
+    <ClInclude Include="Ammo.h" />
+    <ClInclude Include="GraphicsComponentInterface.h" />
     <ClInclude Include="HardwareChecks.h" />
+    <ClInclude Include="Health.h" />
+    <ClInclude Include="Mana.h" />
+    <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="Pathfinding.h" />
+    <ClInclude Include="PhysicsComponent.h" />
+    <ClInclude Include="PickupsInterface.h" />
+    <ClInclude Include="SpecialAbility.h" />
+    <ClInclude Include="StatsComponent.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="ActorComponent.cpp" />
+    <ClCompile Include="AI_Component.cpp" />
+    <ClCompile Include="Ammo.cpp" />
+    <ClCompile Include="GraphicsComponentInterface.cpp" />
     <ClCompile Include="HardwareChecks.cpp" />
+    <ClCompile Include="Health.cpp" />
+    <ClCompile Include="Mana.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="Pathfinding.cpp" />
+    <ClCompile Include="PhysicsComponent.cpp" />
+    <ClCompile Include="PickupsInterface.cpp" />
     <ClCompile Include="SauceEngine.cpp" />
+    <ClCompile Include="SpecialAbility.cpp" />
+    <ClCompile Include="StatsComponent.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

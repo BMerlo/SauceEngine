@@ -1,4 +1,11 @@
 // Hardware checks for engine starts.
+
+/*##############################################################################
+#                                                                             #                                                                                                                                                                    #
+# Developed by Boris Merlo, Michael Noseworthy and Peter Tu                   #
+#                                                                             #                                                                                                                                                                  #
+##############################################################################*/
+
 #define _CRT_SECURE_NO_WARNINGS
 #include "HardwareChecks.h"
 #include <Windows.h>
