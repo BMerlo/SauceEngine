@@ -148,10 +148,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 	ghMutex = CreateMutex(NULL,
 		FALSE, L"SauceEngine");
 
+	DWORD err = GetLastError();
+	LPTSTR Error = 0;
+	LPCTSTR Opened = L"Error, close it";
 	if (ghMutex == NULL)
 	{
-		DWORD err = GetLastError();
-		LPTSTR Error = 0;
+		//moved out of scope items here @Boris
 
 		if (::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
 			NULL,
@@ -165,7 +167,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 		}
 
 		// Display message.
-		MessageBox(NULL, L"CreateMutex error", Error, MB_OK | MB_ICONWARNING);
+		//MessageBox(NULL, L"CreateMutex error", Error, MB_OK | MB_ICONWARNING);
 		return 1;
 	}
 
@@ -174,33 +176,42 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 
 	if (result == WAIT_OBJECT_0)
 	{
+		
 		//main code here    
 		CheckRAM();
 		CheckCPU();
-		CheckHDDHardware();
-		cout << "Code ends and infinite loop begins (Close window manually)" << endl;
+		int hardwareResult;
+		hardwareResult = CheckHDDHardware();
+		if (hardwareResult == 0)
+			return 1;
+		//cout << "Code ends and infinite loop begins (Close window manually)" << endl;
+
+		//Begins DirectX Window.
+		try
+		{
+			SauceEngineApp theApp(hInstance);
+			if (!theApp.Initialize())
+				return 0;
+
+			return theApp.Run();
+		}
+		catch (DxException& e)
+		{
+			MessageBox(nullptr, e.ToString().c_str(), L"HR Failed", MB_OK);
+			return 0;
+		}
 
 	}
 	else
 	{
 		cout << "Apps already opened." << endl;
-		system("PAUSE");
+		//system("PAUSE");
+		//added messagebox @Boris
+		MessageBox(NULL, L"CreateMutex error\n" L"Do not open multiple applications of Sauce Engine", Opened, MB_OK | MB_ICONWARNING);
 		return 1;
 	}
 
-    try
-    {
-        SauceEngineApp theApp(hInstance);
-        if(!theApp.Initialize())
-            return 0;
-
-        return theApp.Run();
-    }
-    catch(DxException& e)
-    {
-        MessageBox(nullptr, e.ToString().c_str(), L"HR Failed", MB_OK);
-        return 0;
-    }
+    
 
 	CloseHandle(ghMutex);
 }
