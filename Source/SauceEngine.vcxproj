@@ -107,6 +107,14 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>md "$(OutDir)Models"
+copy "Models\car.txt" "$(OutDir)Models"
+copy "Models\skull.txt" "$(OutDir)Models"
+md "$(OutDir)Shaders"
+copy "Shaders\Default.hlsl" "$(OutDir)Shaders"
+copy "Shaders\LightingUtil.hlsl" "$(OutDir)Shaders"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -141,6 +149,14 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PreBuildEvent>
+      <Command>md "$(OutDir)Models"
+copy "Models\car.txt" "$(OutDir)Models"
+copy "Models\skull.txt" "$(OutDir)Models"
+md "$(OutDir)Shaders"
+copy "Shaders\Default.hlsl" "$(OutDir)Shaders"
+copy "Shaders\LightingUtil.hlsl" "$(OutDir)Shaders"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Objects\Actor.cpp" />

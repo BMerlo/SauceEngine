@@ -22,6 +22,7 @@ inline void CheckRAM()
 	cout << "Total System Memory: " << (statex.ullTotalPhys / 1024) / 1024 << "MB" << endl;
 
 }
+
 inline DWORD ReadCPUSpeedFromRegistry(DWORD dwCPU)
 {
 	HKEY hKey;
@@ -63,6 +64,7 @@ inline void CheckCPU() {
 		printf("CPU %d speed: ~%dMHz\n", i, dwCPUSpeed);
 	}
 }
+
 inline void CheckHDDHardware()
 	{
 		typedef BOOL(WINAPI *P_GDFSE)(LPCTSTR, PULARGE_INTEGER,

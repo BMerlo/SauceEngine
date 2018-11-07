@@ -10,7 +10,9 @@
 #include "DirectX/MathHelper.h"
 #include "DirectX/UploadBuffer.h"
 #include "DirectX/GeometryGenerator.h"
+#include "Objects/HardwareChecks.cpp"
 #include "FrameResource.h"
+#include "windows.h"
 
 using Microsoft::WRL::ComPtr;
 using namespace DirectX;
@@ -138,6 +140,53 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 #if defined(DEBUG) | defined(_DEBUG)
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
+		
+
+
+	//Checking window uniqueness 
+	HANDLE ghMutex;
+	ghMutex = CreateMutex(NULL,
+		FALSE, L"SauceEngine");
+
+	if (ghMutex == NULL)
+	{
+		DWORD err = GetLastError();
+		LPTSTR Error = 0;
+
+		if (::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+			NULL,
+			err,
+			0,
+			(LPTSTR)&Error,
+			0,
+			NULL) == 0)
+		{
+			// Failed in translating message
+		}
+
+		// Display message.
+		MessageBox(NULL, L"CreateMutex error", Error, MB_OK | MB_ICONWARNING);
+		return 1;
+	}
+
+	//Adding check hardware
+	DWORD result = WaitForSingleObject(ghMutex, 0);
+
+	if (result == WAIT_OBJECT_0)
+	{
+		//main code here    
+		CheckRAM();
+		CheckCPU();
+		CheckHDDHardware();
+		cout << "Code ends and infinite loop begins (Close window manually)" << endl;
+
+	}
+	else
+	{
+		cout << "Apps already opened." << endl;
+		system("PAUSE");
+		return 1;
+	}
 
     try
     {
@@ -152,6 +201,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
         MessageBox(nullptr, e.ToString().c_str(), L"HR Failed", MB_OK);
         return 0;
     }
+
+	CloseHandle(ghMutex);
 }
 
 SauceEngineApp::SauceEngineApp(HINSTANCE hInstance)
@@ -166,7 +217,7 @@ SauceEngineApp::~SauceEngineApp()
 }
 
 bool SauceEngineApp::Initialize()
-{
+{	
     if(!D3DApp::Initialize())
         return false;
 
