@@ -1,6 +1,10 @@
-//***************************************************************************************
-// LitColumnsApp.cpp by Frank Luna (C) 2015 All Rights Reserved.
-//***************************************************************************************
+/*##############################################################################
+#																			   #
+# Copyright 2018 Sauce Pig All Rights Reserved.					               #
+# Developed by Boris Merlo, Michael Noseworthy and Peter Tu                    #
+#                                                                              #
+##############################################################################*/
+
 
 #include "DirectX/d3dApp.h"
 #include "DirectX/MathHelper.h"

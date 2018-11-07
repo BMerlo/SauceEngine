@@ -143,6 +143,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Objects\Actor.cpp" />
+    <ClCompile Include="Objects\ActorComponent.cpp" />
+    <ClCompile Include="Objects\AI_Component.cpp" />
+    <ClCompile Include="Objects\Ammo.cpp" />
+    <ClCompile Include="Objects\GraphicsComponentInterface.cpp" />
+    <ClCompile Include="Objects\HardwareChecks.cpp" />
+    <ClCompile Include="Objects\Health.cpp" />
+    <ClCompile Include="Objects\Mana.cpp" />
+    <ClCompile Include="Objects\MeshCollider.cpp" />
+    <ClCompile Include="Objects\MeshRenderer.cpp" />
+    <ClCompile Include="Objects\Pathfinding.cpp" />
+    <ClCompile Include="Objects\PhysicsComponent.cpp" />
+    <ClCompile Include="Objects\PickupsInterface.cpp" />
+    <ClCompile Include="Objects\Rigidbody.cpp" />
+    <ClCompile Include="Objects\SpecialAbility.cpp" />
+    <ClCompile Include="Objects\StatsComponent.cpp" />
+    <ClCompile Include="Objects\Transform.cpp" />
     <ClCompile Include="SauceEngine.cpp" />
     <ClCompile Include="DirectX\Camera.cpp" />
     <ClCompile Include="DirectX\d3dApp.cpp" />
@@ -164,6 +181,23 @@
     <ClInclude Include="DirectX\MathHelper.h" />
     <ClInclude Include="DirectX\UploadBuffer.h" />
     <ClInclude Include="FrameResource.h" />
+    <ClInclude Include="Objects\Actor.h" />
+    <ClInclude Include="Objects\ActorComponent.h" />
+    <ClInclude Include="Objects\AI_Component.h" />
+    <ClInclude Include="Objects\Ammo.h" />
+    <ClInclude Include="Objects\GraphicsComponentInterface.h" />
+    <ClInclude Include="Objects\HardwareChecks.h" />
+    <ClInclude Include="Objects\Health.h" />
+    <ClInclude Include="Objects\Mana.h" />
+    <ClInclude Include="Objects\MeshCollider.h" />
+    <ClInclude Include="Objects\MeshRenderer.h" />
+    <ClInclude Include="Objects\Pathfinding.h" />
+    <ClInclude Include="Objects\PhysicsComponent.h" />
+    <ClInclude Include="Objects\PickupsInterface.h" />
+    <ClInclude Include="Objects\Rigidbody.h" />
+    <ClInclude Include="Objects\SpecialAbility.h" />
+    <ClInclude Include="Objects\StatsComponent.h" />
+    <ClInclude Include="Objects\Transform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
