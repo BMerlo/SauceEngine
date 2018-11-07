@@ -55,13 +55,13 @@ struct RenderItem
     int BaseVertexLocation = 0;
 };
 
-class LitColumnsApp : public D3DApp
+class SauceEngineApp : public D3DApp
 {
 public:
-    LitColumnsApp(HINSTANCE hInstance);
-    LitColumnsApp(const LitColumnsApp& rhs) = delete;
-    LitColumnsApp& operator=(const LitColumnsApp& rhs) = delete;
-    ~LitColumnsApp();
+    SauceEngineApp(HINSTANCE hInstance);
+    SauceEngineApp(const SauceEngineApp& rhs) = delete;
+    SauceEngineApp& operator=(const SauceEngineApp& rhs) = delete;
+    ~SauceEngineApp();
 
     virtual bool Initialize()override;
 
@@ -141,7 +141,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 
     try
     {
-        LitColumnsApp theApp(hInstance);
+        SauceEngineApp theApp(hInstance);
         if(!theApp.Initialize())
             return 0;
 
@@ -154,18 +154,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
     }
 }
 
-LitColumnsApp::LitColumnsApp(HINSTANCE hInstance)
+SauceEngineApp::SauceEngineApp(HINSTANCE hInstance)
     : D3DApp(hInstance)
 {
 }
 
-LitColumnsApp::~LitColumnsApp()
+SauceEngineApp::~SauceEngineApp()
 {
     if(md3dDevice != nullptr)
         FlushCommandQueue();
 }
 
-bool LitColumnsApp::Initialize()
+bool SauceEngineApp::Initialize()
 {
     if(!D3DApp::Initialize())
         return false;
@@ -197,7 +197,7 @@ bool LitColumnsApp::Initialize()
     return true;
 }
  
-void LitColumnsApp::OnResize()
+void SauceEngineApp::OnResize()
 {
     D3DApp::OnResize();
 
@@ -206,7 +206,7 @@ void LitColumnsApp::OnResize()
     XMStoreFloat4x4(&mProj, P);
 }
 
-void LitColumnsApp::Update(const GameTimer& gt)
+void SauceEngineApp::Update(const GameTimer& gt)
 {
     OnKeyboardInput(gt);
 	UpdateCamera(gt);
@@ -231,7 +231,7 @@ void LitColumnsApp::Update(const GameTimer& gt)
 	UpdateMainPassCB(gt);
 }
 
-void LitColumnsApp::Draw(const GameTimer& gt)
+void SauceEngineApp::Draw(const GameTimer& gt)
 {
     auto cmdListAlloc = mCurrFrameResource->CmdListAlloc;
 
@@ -288,7 +288,7 @@ void LitColumnsApp::Draw(const GameTimer& gt)
     mCommandQueue->Signal(mFence.Get(), mCurrentFence);
 }
 
-void LitColumnsApp::OnMouseDown(WPARAM btnState, int x, int y)
+void SauceEngineApp::OnMouseDown(WPARAM btnState, int x, int y)
 {
     mLastMousePos.x = x;
     mLastMousePos.y = y;
@@ -296,12 +296,12 @@ void LitColumnsApp::OnMouseDown(WPARAM btnState, int x, int y)
     SetCapture(mhMainWnd);
 }
 
-void LitColumnsApp::OnMouseUp(WPARAM btnState, int x, int y)
+void SauceEngineApp::OnMouseUp(WPARAM btnState, int x, int y)
 {
     ReleaseCapture();
 }
 
-void LitColumnsApp::OnMouseMove(WPARAM btnState, int x, int y)
+void SauceEngineApp::OnMouseMove(WPARAM btnState, int x, int y)
 {
     if((btnState & MK_LBUTTON) != 0)
     {
@@ -333,11 +333,11 @@ void LitColumnsApp::OnMouseMove(WPARAM btnState, int x, int y)
     mLastMousePos.y = y;
 }
  
-void LitColumnsApp::OnKeyboardInput(const GameTimer& gt)
+void SauceEngineApp::OnKeyboardInput(const GameTimer& gt)
 {
 }
  
-void LitColumnsApp::UpdateCamera(const GameTimer& gt)
+void SauceEngineApp::UpdateCamera(const GameTimer& gt)
 {
 	// Convert Spherical to Cartesian coordinates.
 	mEyePos.x = mRadius*sinf(mPhi)*cosf(mTheta);
@@ -353,12 +353,12 @@ void LitColumnsApp::UpdateCamera(const GameTimer& gt)
 	XMStoreFloat4x4(&mView, view);
 }
 
-void LitColumnsApp::AnimateMaterials(const GameTimer& gt)
+void SauceEngineApp::AnimateMaterials(const GameTimer& gt)
 {
 	
 }
 
-void LitColumnsApp::UpdateObjectCBs(const GameTimer& gt)
+void SauceEngineApp::UpdateObjectCBs(const GameTimer& gt)
 {
 	auto currObjectCB = mCurrFrameResource->ObjectCB.get();
 	for(auto& e : mAllRitems)
@@ -382,7 +382,7 @@ void LitColumnsApp::UpdateObjectCBs(const GameTimer& gt)
 	}
 }
 
-void LitColumnsApp::UpdateMaterialCBs(const GameTimer& gt)
+void SauceEngineApp::UpdateMaterialCBs(const GameTimer& gt)
 {
 	auto currMaterialCB = mCurrFrameResource->MaterialCB.get();
 	for(auto& e : mMaterials)
@@ -408,7 +408,7 @@ void LitColumnsApp::UpdateMaterialCBs(const GameTimer& gt)
 	}
 }
 
-void LitColumnsApp::UpdateMainPassCB(const GameTimer& gt)
+void SauceEngineApp::UpdateMainPassCB(const GameTimer& gt)
 {
 	XMMATRIX view = XMLoadFloat4x4(&mView);
 	XMMATRIX proj = XMLoadFloat4x4(&mProj);
@@ -459,7 +459,7 @@ void LitColumnsApp::UpdateMainPassCB(const GameTimer& gt)
 	currPassCB->CopyData(0, mMainPassCB);
 }
 
-void LitColumnsApp::BuildRootSignature()
+void SauceEngineApp::BuildRootSignature()
 {
 	// Root parameter can be a table, root descriptor or root constants.
 	CD3DX12_ROOT_PARAMETER slotRootParameter[3];
@@ -491,7 +491,7 @@ void LitColumnsApp::BuildRootSignature()
 		IID_PPV_ARGS(mRootSignature.GetAddressOf())));
 }
 
-void LitColumnsApp::BuildShadersAndInputLayout()
+void SauceEngineApp::BuildShadersAndInputLayout()
 {
 	const D3D_SHADER_MACRO alphaTestDefines[] =
 	{
@@ -510,7 +510,7 @@ void LitColumnsApp::BuildShadersAndInputLayout()
     };
 }
 
-void LitColumnsApp::BuildShapeGeometry()
+void SauceEngineApp::BuildShapeGeometry()
 {
     GeometryGenerator geoGen;
 	GeometryGenerator::MeshData box = geoGen.CreateBox(1.5f, 0.5f, 1.5f, 3);
@@ -839,7 +839,7 @@ void LitColumnsApp::BuildShapeGeometry()
 	mGeometries[geo->Name] = std::move(geo);
 }
 
-void LitColumnsApp::BuildSkullGeometry()
+void SauceEngineApp::BuildSkullGeometry()
 {
 	std::ifstream fin("Models/skull.txt");
 
@@ -914,7 +914,7 @@ void LitColumnsApp::BuildSkullGeometry()
 	mGeometries[geo->Name] = std::move(geo);
 }
 
-void LitColumnsApp::BuildPSOs()
+void SauceEngineApp::BuildPSOs()
 {
     D3D12_GRAPHICS_PIPELINE_STATE_DESC opaquePsoDesc;
 
@@ -947,7 +947,7 @@ void LitColumnsApp::BuildPSOs()
     ThrowIfFailed(md3dDevice->CreateGraphicsPipelineState(&opaquePsoDesc, IID_PPV_ARGS(&mOpaquePSO)));
 }
 
-void LitColumnsApp::BuildFrameResources()
+void SauceEngineApp::BuildFrameResources()
 {
     for(int i = 0; i < gNumFrameResources; ++i)
     {
@@ -956,7 +956,7 @@ void LitColumnsApp::BuildFrameResources()
     }
 }
 
-void LitColumnsApp::BuildMaterials()
+void SauceEngineApp::BuildMaterials()
 {
 	auto Red = std::make_unique<Material>();
 	Red->Name = "Red";
@@ -1016,7 +1016,7 @@ void LitColumnsApp::BuildMaterials()
 	
 }
 
-void LitColumnsApp::BuildRenderItems()
+void SauceEngineApp::BuildRenderItems()
 {
 	/*
 
@@ -1431,7 +1431,7 @@ for (auto& e : mAllRitems)
 mOpaqueRitems.push_back(e.get());
 }
 
-void LitColumnsApp::DrawRenderItems(ID3D12GraphicsCommandList* cmdList, const std::vector<RenderItem*>& ritems)
+void SauceEngineApp::DrawRenderItems(ID3D12GraphicsCommandList* cmdList, const std::vector<RenderItem*>& ritems)
 {
     UINT objCBByteSize = d3dUtil::CalcConstantBufferByteSize(sizeof(ObjectConstants));
     UINT matCBByteSize = d3dUtil::CalcConstantBufferByteSize(sizeof(MaterialConstants));
