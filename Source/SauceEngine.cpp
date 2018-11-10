@@ -14,6 +14,8 @@
 #include "FrameResource.h"
 #include "windows.h"
 
+
+
 using Microsoft::WRL::ComPtr;
 using namespace DirectX;
 using namespace DirectX::PackedVector;
@@ -22,6 +24,7 @@ using namespace DirectX::PackedVector;
 #pragma comment(lib, "D3D12.lib")
 
 const int gNumFrameResources = 3;
+
 
 // Lightweight structure stores parameters to draw a shape.  This will
 // vary from app-to-app.
@@ -64,7 +67,6 @@ public:
     SauceEngineApp(const SauceEngineApp& rhs) = delete;
     SauceEngineApp& operator=(const SauceEngineApp& rhs) = delete;
     ~SauceEngineApp();
-
     virtual bool Initialize()override;
 
 private:
@@ -76,7 +78,8 @@ private:
     virtual void OnMouseUp(WPARAM btnState, int x, int y)override;
     virtual void OnMouseMove(WPARAM btnState, int x, int y)override;
 
-    void OnKeyboardInput(const GameTimer& gt);
+	void OnKeyboardInput();
+	void OnMouseInput();
 	void UpdateCamera(const GameTimer& gt);
 	void AnimateMaterials(const GameTimer& gt);
 	void UpdateObjectCBs(const GameTimer& gt);
@@ -131,6 +134,7 @@ private:
     float mRadius = 15.0f;
 
     POINT mLastMousePos;
+public:
 };
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
@@ -270,7 +274,8 @@ void SauceEngineApp::OnResize()
 
 void SauceEngineApp::Update(const GameTimer& gt)
 {
-    OnKeyboardInput(gt);
+	OnKeyboardInput();
+	OnMouseInput();
 	UpdateCamera(gt);
 
     // Cycle through the circular frame resource array.
@@ -394,11 +399,51 @@ void SauceEngineApp::OnMouseMove(WPARAM btnState, int x, int y)
     mLastMousePos.x = x;
     mLastMousePos.y = y;
 }
- 
-void SauceEngineApp::OnKeyboardInput(const GameTimer& gt)
-{
+void SauceEngineApp::OnKeyboardInput(){
+	while (!keyboard.CharBufferIsEmpty())
+	{
+		unsigned char ch = keyboard.ReadChar();
+		std::string outmsg = "Key: ";
+		outmsg += ch;
+		outmsg += "\n";
+		OutputDebugStringA(outmsg.c_str());
+	}
 }
- 
+
+void SauceEngineApp::OnMouseInput()
+{
+	while (!mouse.EventBufferIsEmpty())
+	{
+		MouseEvent me = mouse.ReadEvent();
+		std::string outmsg = "X: ";
+		outmsg += std::to_string(me.GetPosX());
+		outmsg += ", Y: ";
+		outmsg += std::to_string(me.GetPosY());
+		outmsg += "\n";
+		OutputDebugStringA(outmsg.c_str());
+		if (me.GetType() == MouseEvent::EventType::LPress)
+		{
+			OutputDebugStringA("LMB down\n");
+		}
+		if (me.GetType() == MouseEvent::EventType::RPress)
+		{
+			OutputDebugStringA("RMB down \n");
+		}
+		if (me.GetType() == MouseEvent::EventType::MPress)
+		{
+			OutputDebugStringA("MMB down\n");
+		}
+		if (me.GetType() == MouseEvent::EventType::WheelUp)
+		{
+			OutputDebugStringA("Scrolling up \n");
+		}
+		if (me.GetType() == MouseEvent::EventType::WheelDown)
+		{
+			OutputDebugStringA("Scrolling down \n");
+		}
+	}
+}
+
 void SauceEngineApp::UpdateCamera(const GameTimer& gt)
 {
 	// Convert Spherical to Cartesian coordinates.
