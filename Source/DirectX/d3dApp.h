@@ -11,6 +11,8 @@
 
 #include "d3dUtil.h"
 #include "GameTimer.h"
+#include "..\Keyboard\KeyboardClass.h"
+#include "..\Mouse\MouseClass.h"
 
 // Link necessary d3d12 libraries.
 #pragma comment(lib,"d3dcompiler.lib")
@@ -41,6 +43,8 @@ public:
  
     virtual bool Initialize();
     virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	KeyboardClass keyboard;
+	MouseClass mouse;
 
 protected:
     virtual void CreateRtvAndDsvDescriptorHeaps();

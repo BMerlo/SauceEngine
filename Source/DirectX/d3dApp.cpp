@@ -5,6 +5,7 @@
 #include "d3dApp.h"
 #include <WindowsX.h>
 
+
 using Microsoft::WRL::ComPtr;
 using namespace std;
 using namespace DirectX;
@@ -237,13 +238,13 @@ void D3DApp::OnResize()
  
 LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	switch( msg )
+	switch (msg)
 	{
-	// WM_ACTIVATE is sent when the window is activated or deactivated.  
-	// We pause the game when the window is deactivated and unpause it 
-	// when it becomes active.  
+		// WM_ACTIVATE is sent when the window is activated or deactivated.  
+		// We pause the game when the window is deactivated and unpause it 
+		// when it becomes active.  
 	case WM_ACTIVATE:
-		if( LOWORD(wParam) == WA_INACTIVE )
+		if (LOWORD(wParam) == WA_INACTIVE)
 		{
 			mAppPaused = true;
 			mTimer.Stop();
@@ -255,31 +256,31 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		}
 		return 0;
 
-	// WM_SIZE is sent when the user resizes the window.  
+		// WM_SIZE is sent when the user resizes the window.  
 	case WM_SIZE:
 		// Save the new client area dimensions.
-		mClientWidth  = LOWORD(lParam);
+		mClientWidth = LOWORD(lParam);
 		mClientHeight = HIWORD(lParam);
-		if( md3dDevice )
+		if (md3dDevice)
 		{
-			if( wParam == SIZE_MINIMIZED )
+			if (wParam == SIZE_MINIMIZED)
 			{
 				mAppPaused = true;
 				mMinimized = true;
 				mMaximized = false;
 			}
-			else if( wParam == SIZE_MAXIMIZED )
+			else if (wParam == SIZE_MAXIMIZED)
 			{
 				mAppPaused = false;
 				mMinimized = false;
 				mMaximized = true;
 				OnResize();
 			}
-			else if( wParam == SIZE_RESTORED )
+			else if (wParam == SIZE_RESTORED)
 			{
-				
+
 				// Restoring from minimized state?
-				if( mMinimized )
+				if (mMinimized)
 				{
 					mAppPaused = false;
 					mMinimized = false;
@@ -287,13 +288,13 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				}
 
 				// Restoring from maximized state?
-				else if( mMaximized )
+				else if (mMaximized)
 				{
 					mAppPaused = false;
 					mMaximized = false;
 					OnResize();
 				}
-				else if( mResizing )
+				else if (mResizing)
 				{
 					// If user is dragging the resize bars, we do not resize 
 					// the buffers here because as the user continuously 
@@ -312,64 +313,121 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		}
 		return 0;
 
-	// WM_EXITSIZEMOVE is sent when the user grabs the resize bars.
+		// WM_EXITSIZEMOVE is sent when the user grabs the resize bars.
 	case WM_ENTERSIZEMOVE:
 		mAppPaused = true;
-		mResizing  = true;
+		mResizing = true;
 		mTimer.Stop();
 		return 0;
 
-	// WM_EXITSIZEMOVE is sent when the user releases the resize bars.
-	// Here we reset everything based on the new window dimensions.
+		// WM_EXITSIZEMOVE is sent when the user releases the resize bars.
+		// Here we reset everything based on the new window dimensions.
 	case WM_EXITSIZEMOVE:
 		mAppPaused = false;
-		mResizing  = false;
+		mResizing = false;
 		mTimer.Start();
 		OnResize();
 		return 0;
- 
-	// WM_DESTROY is sent when the window is being destroyed.
+
+		// WM_DESTROY is sent when the window is being destroyed.
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
 
-	// The WM_MENUCHAR message is sent when a menu is active and the user presses 
-	// a key that does not correspond to any mnemonic or accelerator key. 
+		// The WM_MENUCHAR message is sent when a menu is active and the user presses 
+		// a key that does not correspond to any mnemonic or accelerator key. 
 	case WM_MENUCHAR:
-        // Don't beep when we alt-enter.
-        return MAKELRESULT(0, MNC_CLOSE);
+		// Don't beep when we alt-enter.
+		return MAKELRESULT(0, MNC_CLOSE);
 
-	// Catch this message so to prevent the window from becoming too small.
+		// Catch this message so to prevent the window from becoming too small.
 	case WM_GETMINMAXINFO:
 		((MINMAXINFO*)lParam)->ptMinTrackSize.x = 200;
-		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200; 
+		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
 		return 0;
 
 	case WM_LBUTTONDOWN:
+		mouse.OnLeftPressed(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		return 0;
 	case WM_MBUTTONDOWN:
+		mouse.OnMiddlePressed(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		return 0;
 	case WM_RBUTTONDOWN:
 		OnMouseDown(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		mouse.OnRightPressed(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	case WM_LBUTTONUP:
-	case WM_MBUTTONUP:
 	case WM_RBUTTONUP:
 		OnMouseUp(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	case WM_MOUSEMOVE:
 		OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
-    case WM_KEYUP:
-        if(wParam == VK_ESCAPE)
-        {
-            PostQuitMessage(0);
-        }
-        else if((int)wParam == VK_F2)
-            Set4xMsaaState(!m4xMsaaState);
-
-        return 0;
+	case WM_KEYDOWN:
+	{
+		unsigned char keycode = static_cast<unsigned char>(wParam);
+		if (keyboard.IsKeysAutoRepeat())
+		{
+			keyboard.OnKeyPressed(keycode);
+		}
+		else
+		{
+			const bool wasPressed = lParam & 0x40000000;
+			if (!wasPressed)
+			{
+				keyboard.OnKeyPressed(keycode);
+			}
+		}
+		return 0;
 	}
+	case WM_KEYUP:
+	{
+		unsigned char keycode = static_cast<unsigned char>(wParam);
+		keyboard.OnKeyReleased(keycode);
+		return 0;
+		if (wParam == VK_ESCAPE)
+		{
+			PostQuitMessage(0);
+		}
+		else if ((int)wParam == VK_F2)
+			Set4xMsaaState(!m4xMsaaState);
 
+		return 0;
+	}
+	case WM_CHAR:
+	{
+		unsigned char ch = static_cast<unsigned char>(wParam);
+		if (keyboard.IsCharsAutoRepeat())
+		{
+			keyboard.OnChar(ch);
+		}
+		else
+		{
+			const bool wasPressed = lParam & 0x40000000;
+			if (!wasPressed)
+			{
+				keyboard.OnChar(ch);
+			}
+		}
+		return 0;
+	}
+	case WM_MOUSEWHEEL:
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
+		{
+			mouse.OnWheelUp(x, y);
+		}
+		else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0)
+		{
+			mouse.OnWheelDown(x, y);
+		}
+		return 0;
+	}
+	default:
 	return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
 }
 
 bool D3DApp::InitMainWindow()

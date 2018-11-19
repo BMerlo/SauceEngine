@@ -102,6 +102,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>
+      </MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -159,6 +161,10 @@ copy "Shaders\LightingUtil.hlsl" "$(OutDir)Shaders"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Keyboard\KeyboardClass.cpp" />
+    <ClCompile Include="Keyboard\KeyboardEvent.cpp" />
+    <ClCompile Include="Mouse\MouseClass.cpp" />
+    <ClCompile Include="Mouse\MouseEvent.cpp" />
     <ClCompile Include="Objects\Actor.cpp" />
     <ClCompile Include="Objects\ActorComponent.cpp" />
     <ClCompile Include="Objects\AI_Component.cpp" />
@@ -197,6 +203,10 @@ copy "Shaders\LightingUtil.hlsl" "$(OutDir)Shaders"</Command>
     <ClInclude Include="DirectX\MathHelper.h" />
     <ClInclude Include="DirectX\UploadBuffer.h" />
     <ClInclude Include="FrameResource.h" />
+    <ClInclude Include="Keyboard\KeyboardClass.h" />
+    <ClInclude Include="Keyboard\KeyboardEvent.h" />
+    <ClInclude Include="Mouse\MouseClass.h" />
+    <ClInclude Include="Mouse\MouseEvent.h" />
     <ClInclude Include="Objects\Actor.h" />
     <ClInclude Include="Objects\ActorComponent.h" />
     <ClInclude Include="Objects\AI_Component.h" />
