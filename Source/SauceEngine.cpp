@@ -26,6 +26,8 @@ using namespace DirectX::PackedVector;
 const int gNumFrameResources = 3;
 
 
+
+
 // Lightweight structure stores parameters to draw a shape.  This will
 // vary from app-to-app.
 struct RenderItem
@@ -95,6 +97,10 @@ private:
     void BuildMaterials();
     void BuildRenderItems();
     void DrawRenderItems(ID3D12GraphicsCommandList* cmdList, const std::vector<RenderItem*>& ritems);
+	void DrawRenderItems2(ID3D12GraphicsCommandList* cmdList, const std::vector<RenderItem*>& ritems);
+
+	void flipBool();
+
  
 private:
 
@@ -132,6 +138,9 @@ private:
     float mTheta = 1.5f*XM_PI;
     float mPhi = 0.2f*XM_PI;
     float mRadius = 15.0f;
+
+	//hides items from rendering
+	bool HideMe = false;
 
     POINT mLastMousePos;
 public:
@@ -1116,8 +1125,6 @@ void SauceEngineApp::BuildMaterials()
 	mMaterials["Yellow"] = std::move(Yellow);
 	mMaterials["Black"] = std::move(Black);
 	mMaterials["Brown"] = std::move(Brown);
-
-	
 }
 
 void SauceEngineApp::BuildRenderItems()
@@ -1249,286 +1256,289 @@ void SauceEngineApp::BuildRenderItems()
 
 	UINT objCBIndex = 6; 
 	
-
-	//box randomization
-	for (int i = 0; i < 100; ++i)
+	if (HideMe == true)
 	{
+		//box randomization
+		for (int i = 0; i < 100; ++i)
+		{
 
-		std::string colour = "Red";
+			std::string colour = "Red";
 
-		if (i >= 25)
-			colour = "Green";
+			if (i >= 25)
+				colour = "Green";
 
-		if (i >= 50)
-			colour = "Blue";
+			if (i >= 50)
+				colour = "Blue";
 
-		if (i >= 75)
-			colour = "Yellow";
+			if (i >= 75)
+				colour = "Yellow";
 
 
-		float Xdir = 1.0f;
-		float Ydir = 1.0f;
-		float Zdir = 1.0f;
-		float radius = 2.8f;
+			float Xdir = 1.0f;
+			float Ydir = 1.0f;
+			float Zdir = 1.0f;
+			float radius = 2.8f;
 
-		float HexXcenter = 15.0f; //initial X position of item
-		float HexYcenter = 1.0f;  //initial Y position of item
-		float HexZcenter = 0.0f;  //initial Z position of item
+			float HexXcenter = 15.0f; //initial X position of item
+			float HexYcenter = 1.0f;  //initial Y position of item
+			float HexZcenter = 0.0f;  //initial Z position of item
 
-		Xdir = HexXcenter + radius * static_cast<float>(cos(rand()));
-		Ydir = HexYcenter + 1 * static_cast<float>(sin(rand()));
-		Zdir = HexZcenter + radius * static_cast<float>(sin(rand()));
+			Xdir = HexXcenter + radius * static_cast<float>(cos(rand()));
+			Ydir = HexYcenter + 1 * static_cast<float>(sin(rand()));
+			Zdir = HexZcenter + radius * static_cast<float>(sin(rand()));
 
-		float RotationX = static_cast<float>(sin(rand()));
-		float RotationY = static_cast<float>(sin(rand()));
-		float RotationZ = static_cast<float>(sin(rand()));
-		
-		XMMATRIX leftWorld = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationX(RotationX) * XMMatrixRotationY(RotationY) * XMMatrixRotationZ(RotationZ) * XMMatrixTranslation(Xdir, Ydir, Zdir);
-		//XMMATRIX rightWorld = XMMatrixTranslation(+1.0f, 1.5f, -1.0f + i * 5.0f);
+			float RotationX = static_cast<float>(sin(rand()));
+			float RotationY = static_cast<float>(sin(rand()));
+			float RotationZ = static_cast<float>(sin(rand()));
+
+			XMMATRIX leftWorld = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationX(RotationX) * XMMatrixRotationY(RotationY) * XMMatrixRotationZ(RotationZ) * XMMatrixTranslation(Xdir, Ydir, Zdir);
+			//XMMATRIX rightWorld = XMMatrixTranslation(+1.0f, 1.5f, -1.0f + i * 5.0f);
+			/*
+			auto hexagonRitem = std::make_unique<RenderItem>();
+			XMStoreFloat4x4(&hexagonRitem->World, leftWorld);
+			XMStoreFloat4x4(&hexagonRitem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+			hexagonRitem->ObjCBIndex = objCBIndex++;
+			hexagonRitem->Mat = mMaterials[colour].get();
+			hexagonRitem->Geo = mGeometries["shapeGeo"].get();
+			hexagonRitem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+			hexagonRitem->IndexCount = hexagonRitem->Geo->DrawArgs["hexagon"].IndexCount;
+			hexagonRitem->StartIndexLocation = hexagonRitem->Geo->DrawArgs["hexagon"].StartIndexLocation;
+			hexagonRitem->BaseVertexLocation = hexagonRitem->Geo->DrawArgs["hexagon"].BaseVertexLocation;
+			mAllRitems.push_back(std::move(hexagonRitem));
+			*/
+
+			auto candy3Ritem = std::make_unique<RenderItem>();
+			XMStoreFloat4x4(&candy3Ritem->World, leftWorld);
+			XMStoreFloat4x4(&candy3Ritem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+			candy3Ritem->ObjCBIndex = objCBIndex++; //10
+			candy3Ritem->Mat = mMaterials[colour].get();
+			candy3Ritem->Geo = mGeometries["shapeGeo"].get();
+			candy3Ritem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+			candy3Ritem->IndexCount = candy3Ritem->Geo->DrawArgs["candy3"].IndexCount;
+			candy3Ritem->StartIndexLocation = candy3Ritem->Geo->DrawArgs["candy3"].StartIndexLocation;
+			candy3Ritem->BaseVertexLocation = candy3Ritem->Geo->DrawArgs["candy3"].BaseVertexLocation;
+			mAllRitems.push_back(std::move(candy3Ritem));
+
+		}
+
+		//box randomization
+		for (int i = 0; i < 50; ++i)
+		{
+
+
+			float Xdir = 1.0f;
+			float Ydir = 1.0f;
+			float Zdir = 1.0f;
+			float radius = 2.8f;
+
+			float HexXcenter = -15.0f; //initial X position of item
+			float HexYcenter = 1.0f;  //initial Y position of item
+			float HexZcenter = 0.0f;  //initial Z position of item
+
+			Xdir = HexXcenter + radius * static_cast<float>(cos(rand()));
+			Ydir = HexYcenter + 1.0f * static_cast<float>(sin(rand()));
+			Zdir = HexZcenter + radius * static_cast<float>(sin(rand()));
+
+			float RotationX = static_cast<float>(sin(rand()));
+			float RotationY = static_cast<float>(sin(rand()));
+			float RotationZ = static_cast<float>(sin(rand()));
+
+
+			XMMATRIX leftWorld = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationX(RotationX) * XMMatrixRotationY(RotationY) * XMMatrixRotationZ(RotationZ) * XMMatrixTranslation(Xdir, Ydir, Zdir);;
+			//XMMATRIX rightWorld = XMMatrixTranslation(+1.0f, 1.5f, -1.0f + i * 5.0f);
+			/*
+			auto hexagonRitem = std::make_unique<RenderItem>();
+			XMStoreFloat4x4(&hexagonRitem->World, leftWorld);
+			XMStoreFloat4x4(&hexagonRitem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+			hexagonRitem->ObjCBIndex = objCBIndex++;
+			hexagonRitem->Mat = mMaterials[colour].get();
+			hexagonRitem->Geo = mGeometries["shapeGeo"].get();
+			hexagonRitem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+			hexagonRitem->IndexCount = hexagonRitem->Geo->DrawArgs["hexagon"].IndexCount;
+			hexagonRitem->StartIndexLocation = hexagonRitem->Geo->DrawArgs["hexagon"].StartIndexLocation;
+			hexagonRitem->BaseVertexLocation = hexagonRitem->Geo->DrawArgs["hexagon"].BaseVertexLocation;
+			mAllRitems.push_back(std::move(hexagonRitem));
+
+
+			auto candy3Ritem = std::make_unique<RenderItem>();
+			XMStoreFloat4x4(&candy3Ritem->World, leftWorld);
+			XMStoreFloat4x4(&candy3Ritem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+			candy3Ritem->ObjCBIndex = objCBIndex++; //10
+			candy3Ritem->Mat = mMaterials[colour].get();
+			candy3Ritem->Geo = mGeometries["shapeGeo"].get();
+			candy3Ritem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+			candy3Ritem->IndexCount = candy3Ritem->Geo->DrawArgs["candy3"].IndexCount;
+			candy3Ritem->StartIndexLocation = candy3Ritem->Geo->DrawArgs["candy3"].StartIndexLocation;
+			candy3Ritem->BaseVertexLocation = candy3Ritem->Geo->DrawArgs["candy3"].BaseVertexLocation;
+			mAllRitems.push_back(std::move(candy3Ritem));
+			*/
+			auto candy2Ritem = std::make_unique<RenderItem>();
+			XMStoreFloat4x4(&candy2Ritem->World, leftWorld);
+			XMStoreFloat4x4(&candy2Ritem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+			candy2Ritem->ObjCBIndex = objCBIndex++;
+			candy2Ritem->Mat = mMaterials["Brown"].get();
+			candy2Ritem->Geo = mGeometries["shapeGeo"].get();
+			candy2Ritem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+			candy2Ritem->IndexCount = candy2Ritem->Geo->DrawArgs["candy2"].IndexCount;
+			candy2Ritem->StartIndexLocation = candy2Ritem->Geo->DrawArgs["candy2"].StartIndexLocation;
+			candy2Ritem->BaseVertexLocation = candy2Ritem->Geo->DrawArgs["candy2"].BaseVertexLocation;
+			mAllRitems.push_back(std::move(candy2Ritem));
+
+
+		}
+
+
 		/*
-		auto hexagonRitem = std::make_unique<RenderItem>();
-		XMStoreFloat4x4(&hexagonRitem->World, leftWorld);
-		XMStoreFloat4x4(&hexagonRitem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
-		hexagonRitem->ObjCBIndex = objCBIndex++;
-		hexagonRitem->Mat = mMaterials[colour].get();
-		hexagonRitem->Geo = mGeometries["shapeGeo"].get();
-		hexagonRitem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		hexagonRitem->IndexCount = hexagonRitem->Geo->DrawArgs["hexagon"].IndexCount;
-		hexagonRitem->StartIndexLocation = hexagonRitem->Geo->DrawArgs["hexagon"].StartIndexLocation;
-		hexagonRitem->BaseVertexLocation = hexagonRitem->Geo->DrawArgs["hexagon"].BaseVertexLocation;
-		mAllRitems.push_back(std::move(hexagonRitem));
-		*/
+		//circle randomization
+		for (int i = 0; i < 1000; ++i)
+		{
 
-		auto candy3Ritem = std::make_unique<RenderItem>();
-		XMStoreFloat4x4(&candy3Ritem->World, leftWorld);
-		XMStoreFloat4x4(&candy3Ritem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
-		candy3Ritem->ObjCBIndex = objCBIndex++; //10
-		candy3Ritem->Mat = mMaterials[colour].get();
-		candy3Ritem->Geo = mGeometries["shapeGeo"].get();
-		candy3Ritem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		candy3Ritem->IndexCount = candy3Ritem->Geo->DrawArgs["candy3"].IndexCount;
-		candy3Ritem->StartIndexLocation = candy3Ritem->Geo->DrawArgs["candy3"].StartIndexLocation;
-		candy3Ritem->BaseVertexLocation = candy3Ritem->Geo->DrawArgs["candy3"].BaseVertexLocation;
-		mAllRitems.push_back(std::move(candy3Ritem));
+			std::string colour = "Red";
 
-	}
-	
-	//box randomization
-	for (int i = 0; i < 50; ++i)
-	{
+			if (i >= 200)
+				colour = "Green";
 
+			if (i >= 400)
+				colour = "Blue";
 
-		float Xdir = 1.0f;
-		float Ydir = 1.0f;
-		float Zdir = 1.0f;
-		float radius = 2.8f;
+			if (i >= 600)
+				colour = "Yellow";
 
-		float HexXcenter = -15.0f; //initial X position of item
-		float HexYcenter = 1.0f;  //initial Y position of item
-		float HexZcenter = 0.0f;  //initial Z position of item
+			if (i >= 800)
+				colour = "Black";
 
-		Xdir = HexXcenter + radius * static_cast<float>(cos(rand()));
-		Ydir = HexYcenter + 1.0f * static_cast<float>(sin(rand()));
-		Zdir = HexZcenter + radius * static_cast<float>(sin(rand()));
+			float RealRadius = 10;
+			float r = ((double)rand() / (RAND_MAX)) + 1;
+			float a = ((double)rand() / (RAND_MAX)) * XM_2PI;
 
-		float RotationX = static_cast<float>(sin(rand()));
-		float RotationY = static_cast<float>(sin(rand()));
-		float RotationZ = static_cast<float>(sin(rand()));
+			float R = RealRadius - sqrt(r) * RealRadius; // Fix distribution and scale to [0, RealRadius]
+
+			float x = cosf(a) * R;
+			float y = sinf(a) * R;
+
+			float Xdir = 1.0f;
+			float Ydir = 1.0f;
+			float Zdir = 1.0f;
+			float radius = 2.8;
+
+			float HexXcenter = 0; //initial X position of item
+			float HexYcenter = 1; //initial Y position of item
+			float HexZcenter = 0; //initial Z position of item
+
+			Xdir = HexXcenter + x;
+			Ydir = HexYcenter + 1 * sin(rand());
+			Zdir = HexZcenter + y;
 
 
-		XMMATRIX leftWorld = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationX(RotationX) * XMMatrixRotationY(RotationY) * XMMatrixRotationZ(RotationZ) * XMMatrixTranslation(Xdir, Ydir, Zdir);;
-		//XMMATRIX rightWorld = XMMatrixTranslation(+1.0f, 1.5f, -1.0f + i * 5.0f);
-		/*
-		auto hexagonRitem = std::make_unique<RenderItem>();
-		XMStoreFloat4x4(&hexagonRitem->World, leftWorld);
-		XMStoreFloat4x4(&hexagonRitem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
-		hexagonRitem->ObjCBIndex = objCBIndex++;
-		hexagonRitem->Mat = mMaterials[colour].get();
-		hexagonRitem->Geo = mGeometries["shapeGeo"].get();
-		hexagonRitem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		hexagonRitem->IndexCount = hexagonRitem->Geo->DrawArgs["hexagon"].IndexCount;
-		hexagonRitem->StartIndexLocation = hexagonRitem->Geo->DrawArgs["hexagon"].StartIndexLocation;
-		hexagonRitem->BaseVertexLocation = hexagonRitem->Geo->DrawArgs["hexagon"].BaseVertexLocation;
-		mAllRitems.push_back(std::move(hexagonRitem));
-		
-
-		auto candy3Ritem = std::make_unique<RenderItem>();
-		XMStoreFloat4x4(&candy3Ritem->World, leftWorld);
-		XMStoreFloat4x4(&candy3Ritem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
-		candy3Ritem->ObjCBIndex = objCBIndex++; //10
-		candy3Ritem->Mat = mMaterials[colour].get();
-		candy3Ritem->Geo = mGeometries["shapeGeo"].get();
-		candy3Ritem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		candy3Ritem->IndexCount = candy3Ritem->Geo->DrawArgs["candy3"].IndexCount;
-		candy3Ritem->StartIndexLocation = candy3Ritem->Geo->DrawArgs["candy3"].StartIndexLocation;
-		candy3Ritem->BaseVertexLocation = candy3Ritem->Geo->DrawArgs["candy3"].BaseVertexLocation;
-		mAllRitems.push_back(std::move(candy3Ritem));
-		*/
-		auto candy2Ritem = std::make_unique<RenderItem>();
-		XMStoreFloat4x4(&candy2Ritem->World, leftWorld);
-		XMStoreFloat4x4(&candy2Ritem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
-		candy2Ritem->ObjCBIndex = objCBIndex++; 
-		candy2Ritem->Mat = mMaterials["Brown"].get();
-		candy2Ritem->Geo = mGeometries["shapeGeo"].get();
-		candy2Ritem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		candy2Ritem->IndexCount = candy2Ritem->Geo->DrawArgs["candy2"].IndexCount;
-		candy2Ritem->StartIndexLocation = candy2Ritem->Geo->DrawArgs["candy2"].StartIndexLocation;
-		candy2Ritem->BaseVertexLocation = candy2Ritem->Geo->DrawArgs["candy2"].BaseVertexLocation;
-		mAllRitems.push_back(std::move(candy2Ritem));
+			XMMATRIX leftWorld = XMMatrixTranslation(Xdir, Ydir, Zdir);
+			//XMMATRIX rightWorld = XMMatrixTranslation(+1.0f, 1.5f, -1.0f + i * 5.0f);
 
 
+
+
+			auto candy2Ritem = std::make_unique<RenderItem>();
+			XMStoreFloat4x4(&candy2Ritem->World, leftWorld);
+			XMStoreFloat4x4(&candy2Ritem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+			candy2Ritem->ObjCBIndex = objCBIndex++; //10
+			candy2Ritem->Mat = mMaterials[colour].get();
+			candy2Ritem->Geo = mGeometries["shapeGeo"].get();
+			candy2Ritem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+			candy2Ritem->IndexCount = candy2Ritem->Geo->DrawArgs["candy1"].IndexCount;
+			candy2Ritem->StartIndexLocation = candy2Ritem->Geo->DrawArgs["candy1"].StartIndexLocation;
+			candy2Ritem->BaseVertexLocation = candy2Ritem->Geo->DrawArgs["candy1"].BaseVertexLocation;
+			mAllRitems.push_back(std::move(candy2Ritem));
+		}
+
+		// All the render items are opaque.
+		for(auto& e : mAllRitems)
+			mOpaqueRitems.push_back(e.get());
 	}
 
-
-	/*
-	//circle randomization
-	for (int i = 0; i < 1000; ++i)
-	{
-
-		std::string colour = "Red";
-
-		if (i >= 200)
-			colour = "Green";
-
-		if (i >= 400)
-			colour = "Blue";
-
-		if (i >= 600)
-			colour = "Yellow";
-
-		if (i >= 800)
-			colour = "Black";
-
-		float RealRadius = 10;
-		float r = ((double)rand() / (RAND_MAX)) + 1;
-		float a = ((double)rand() / (RAND_MAX)) * XM_2PI;
-
-		float R = RealRadius - sqrt(r) * RealRadius; // Fix distribution and scale to [0, RealRadius]
-
-		float x = cosf(a) * R;
-		float y = sinf(a) * R;
-
-		float Xdir = 1.0f;
-		float Ydir = 1.0f;
-		float Zdir = 1.0f;
-		float radius = 2.8;
-
-		float HexXcenter = 0; //initial X position of item
-		float HexYcenter = 1; //initial Y position of item
-		float HexZcenter = 0; //initial Z position of item
-
-		Xdir = HexXcenter + x;
-		Ydir = HexYcenter + 1 * sin(rand());
-		Zdir = HexZcenter + y;
-
-
-		XMMATRIX leftWorld = XMMatrixTranslation(Xdir, Ydir, Zdir);
-		//XMMATRIX rightWorld = XMMatrixTranslation(+1.0f, 1.5f, -1.0f + i * 5.0f);
-
-
-		
-
-		auto candy2Ritem = std::make_unique<RenderItem>();
-		XMStoreFloat4x4(&candy2Ritem->World, leftWorld);
-		XMStoreFloat4x4(&candy2Ritem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
-		candy2Ritem->ObjCBIndex = objCBIndex++; //10
-		candy2Ritem->Mat = mMaterials[colour].get();
-		candy2Ritem->Geo = mGeometries["shapeGeo"].get();
-		candy2Ritem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		candy2Ritem->IndexCount = candy2Ritem->Geo->DrawArgs["candy1"].IndexCount;
-		candy2Ritem->StartIndexLocation = candy2Ritem->Geo->DrawArgs["candy1"].StartIndexLocation;
-		candy2Ritem->BaseVertexLocation = candy2Ritem->Geo->DrawArgs["candy1"].BaseVertexLocation;
-		mAllRitems.push_back(std::move(candy2Ritem));
-	}
-	
-	// All the render items are opaque.
-	for(auto& e : mAllRitems)
-		mOpaqueRitems.push_back(e.get());
-}
-
-*/
-	//Triangle randomization
-for (int i = 0; i < 100; ++i)
-{
-
-	std::string colour = "Red";
-
-	if (i >= 20)
-		colour = "Green";
-
-	if (i >= 40)
-		colour = "Blue";
-
-	if (i >= 60)
-		colour = "Yellow";
-
-	if (i >= 80)
-		colour = "Black";
-
-	
-	float RealRadius = 17;
-	float r = ((float)rand() / (RAND_MAX)) + 1.0f;
-	float a = ((float)rand() / (RAND_MAX)) * 1.14f;
-
-	float R = RealRadius - sqrt(r) * RealRadius; // Fix distribution and scale to [0, RealRadius]
-
-	float x = cosf(a) * R;
-	float y = sinf(a) * R;
-	
-	float Xdir = 1.0f;
-	float Ydir = 1.0f;
-	float Zdir = 1.0f;
-	
-
-	float HexXcenter = 2.8f; //initial X position of item
-	float HexYcenter = 1.0f; //initial Y position of item
-	float HexZcenter = 1.8f; //initial Z position of item
-
-	Xdir = HexXcenter + x;
-	Ydir = HexYcenter + 1.0f * static_cast<float>(sin(rand()));
-	Zdir = HexZcenter + y;
-
-	
-	/*
-	float Xdir = 1.0f;
-	float Ydir = 1.0f;
-	float Zdir = 0.0f;
-
-	float angle = 180;
-
-	float radius = 2.8;
-
-	
-	
-
-	Xdir = radius * cos(angle) + Xdir;
-	Ydir = radius * sin(angle) + Ydir;
-
-	Xdir = Xdir * cos(rand());
-	Ydir = Ydir * sin(rand());
-	Zdir = sin(rand());
 	*/
+	//Triangle randomization
+		for (int i = 0; i < 100; ++i)
+		{
 
-	float RotationX = static_cast<float>(sin(rand()));
-	float RotationY = static_cast<float>(sin(rand()));
-	float RotationZ = static_cast<float>(sin(rand()));
-	XMMATRIX leftWorld = XMMatrixRotationX(RotationX) * XMMatrixRotationY(RotationY) * XMMatrixRotationZ(RotationZ) *XMMatrixTranslation(Xdir, Ydir, Zdir);
-	//XMMATRIX rightWorld = XMMatrixTranslation(+1.0f, 1.5f, -1.0f + i * 5.0f);
+			std::string colour = "Red";
+
+			if (i >= 20)
+				colour = "Green";
+
+			if (i >= 40)
+				colour = "Blue";
+
+			if (i >= 60)
+				colour = "Yellow";
+
+			if (i >= 80)
+				colour = "Black";
+
+
+			float RealRadius = 17;
+			float r = ((float)rand() / (RAND_MAX)) + 1.0f;
+			float a = ((float)rand() / (RAND_MAX)) * 1.14f;
+
+			float R = RealRadius - sqrt(r) * RealRadius; // Fix distribution and scale to [0, RealRadius]
+
+			float x = cosf(a) * R;
+			float y = sinf(a) * R;
+
+			float Xdir = 1.0f;
+			float Ydir = 1.0f;
+			float Zdir = 1.0f;
+
+
+			float HexXcenter = 2.8f; //initial X position of item
+			float HexYcenter = 1.0f; //initial Y position of item
+			float HexZcenter = 1.8f; //initial Z position of item
+
+			Xdir = HexXcenter + x;
+			Ydir = HexYcenter + 1.0f * static_cast<float>(sin(rand()));
+			Zdir = HexZcenter + y;
+
+
+			/*
+			float Xdir = 1.0f;
+			float Ydir = 1.0f;
+			float Zdir = 0.0f;
+
+			float angle = 180;
+
+			float radius = 2.8;
 
 
 
-	auto candy2Ritem = std::make_unique<RenderItem>();
-	XMStoreFloat4x4(&candy2Ritem->World, leftWorld);
-	XMStoreFloat4x4(&candy2Ritem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
-	candy2Ritem->ObjCBIndex = objCBIndex++; //10
-	candy2Ritem->Mat = mMaterials[colour].get();
-	candy2Ritem->Geo = mGeometries["shapeGeo"].get();
-	candy2Ritem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	candy2Ritem->IndexCount = candy2Ritem->Geo->DrawArgs["candy1"].IndexCount;
-	candy2Ritem->StartIndexLocation = candy2Ritem->Geo->DrawArgs["candy1"].StartIndexLocation;
-	candy2Ritem->BaseVertexLocation = candy2Ritem->Geo->DrawArgs["candy1"].BaseVertexLocation;
-	mAllRitems.push_back(std::move(candy2Ritem));
-}
+
+			Xdir = radius * cos(angle) + Xdir;
+			Ydir = radius * sin(angle) + Ydir;
+
+			Xdir = Xdir * cos(rand());
+			Ydir = Ydir * sin(rand());
+			Zdir = sin(rand());
+			*/
+
+			float RotationX = static_cast<float>(sin(rand()));
+			float RotationY = static_cast<float>(sin(rand()));
+			float RotationZ = static_cast<float>(sin(rand()));
+			XMMATRIX leftWorld = XMMatrixRotationX(RotationX) * XMMatrixRotationY(RotationY) * XMMatrixRotationZ(RotationZ) *XMMatrixTranslation(Xdir, Ydir, Zdir);
+			//XMMATRIX rightWorld = XMMatrixTranslation(+1.0f, 1.5f, -1.0f + i * 5.0f);
+
+
+
+			auto candy2Ritem = std::make_unique<RenderItem>();
+			XMStoreFloat4x4(&candy2Ritem->World, leftWorld);
+			XMStoreFloat4x4(&candy2Ritem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+			candy2Ritem->ObjCBIndex = objCBIndex++; //10
+			candy2Ritem->Mat = mMaterials[colour].get();
+			candy2Ritem->Geo = mGeometries["shapeGeo"].get();
+			candy2Ritem->PrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+			candy2Ritem->IndexCount = candy2Ritem->Geo->DrawArgs["candy1"].IndexCount;
+			candy2Ritem->StartIndexLocation = candy2Ritem->Geo->DrawArgs["candy1"].StartIndexLocation;
+			candy2Ritem->BaseVertexLocation = candy2Ritem->Geo->DrawArgs["candy1"].BaseVertexLocation;
+			mAllRitems.push_back(std::move(candy2Ritem));
+		}
+
+	}
 
 // All the render items are opaque.
 for (auto& e : mAllRitems)
@@ -1560,4 +1570,9 @@ void SauceEngineApp::DrawRenderItems(ID3D12GraphicsCommandList* cmdList, const s
 
         cmdList->DrawIndexedInstanced(ri->IndexCount, 1, ri->StartIndexLocation, ri->BaseVertexLocation, 0);
     }
+}
+
+void SauceEngineApp::flipBool()
+{
+	HideMe = !HideMe;
 }
