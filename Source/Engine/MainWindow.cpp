@@ -177,15 +177,25 @@ LRESULT MainWindow::HandleMsg( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam )
 		int x = LOWORD( lParam );
 		int y = HIWORD( lParam );
 		mouse.OnLeftPressed( x,y );
-		OutputDebugStringA("LMB down\n");
+		std::string outmsg = "LMB down: x:";
+		outmsg += std::to_string(x);
+		outmsg += " y:";
+		outmsg += std::to_string(y);
+		outmsg += "\n";
+		OutputDebugStringA(outmsg.c_str());
 		break;
 	}
 	case WM_RBUTTONDOWN:
 	{
 		int x = LOWORD( lParam );
 		int y = HIWORD( lParam );
-		mouse.OnRightPressed( x,y );
-		OutputDebugStringA("RMB down\n");
+		mouse.OnRightPressed( x,y ); 
+		std::string outmsg = "RMB down: x:";
+		outmsg += std::to_string(x);
+		outmsg += " y:";
+		outmsg += std::to_string(y);
+		outmsg += "\n";
+		OutputDebugStringA(outmsg.c_str());
 		break;
 	}
 	case WM_LBUTTONUP:
