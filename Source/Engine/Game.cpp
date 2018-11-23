@@ -20,8 +20,13 @@ void Game::Go()
 	UpdateModel();
 	ComposeFrame();
 	gfx.EndFrame();
-	presseddown = wnd.kbd.KeyIsPressed(VK_UP);
 
+	if (wnd.kbd.KeyIsPressed(VK_UP) || wnd.kbd.KeyIsPressed(VK_DOWN) || wnd.mouse.LeftIsPressed() || wnd.mouse.RightIsPressed())
+	{
+		presseddown = true;
+	}
+	else
+		presseddown = false;
 }
 
 void Game::UpdateModel()
