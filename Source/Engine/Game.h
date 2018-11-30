@@ -23,7 +23,7 @@ private:
 	/********************************/
 	/*  User Functions              */
 	/********************************/
-	void print_Hi();
+	void print_Hi(int x, int y, int red, int green, int blue);
 
 private:
 	MainWindow& wnd;
