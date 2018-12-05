@@ -7,6 +7,15 @@
 #include "MainWindow.h"
 #include "Game.h"
 
+bool doOnce = false;
+
+int x;
+int y;
+int redColor;
+int greenColor;
+int blueColor;
+
+
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
@@ -26,7 +35,10 @@ void Game::Go()
 		presseddown = true;
 	}
 	else
+	{
 		presseddown = false;
+		doOnce = false;
+	}
 }
 
 void Game::UpdateModel()
@@ -35,77 +47,91 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
+
+
 	if (presseddown)
 	{
-		print_Hi();
+		if (doOnce == false)
+		{
+			x = rand() % 500 + 1;
+			y = rand() % 500 + 1;
 
+			redColor = rand() % 255 + 1;
+			greenColor = rand() % 255 + 1;
+			blueColor = rand() % 255 + 1;
 
+			if (redColor == 0 && greenColor == 0 && blueColor == 0)
+			{
+				while (redColor == 0 && greenColor == 0 && blueColor == 0)
+				{
+					redColor = rand() % 255 + 1;
+					greenColor = rand() % 255 + 1;
+					blueColor = rand() % 255 + 1;
+				}
+			}
+			doOnce = true;
+		}
+		print_Hi(x, y, redColor, greenColor, blueColor);
 	}
 }
 
-void Game::print_Hi()
+void Game::print_Hi(int x, int y, int red, int green, int blue)
 {
-	//Horizontal line
-	gfx.PutPixel(100, 100, 255, 255, 255);
-	gfx.PutPixel(99, 100, 255, 255, 255);
-	gfx.PutPixel(98, 100, 255, 255, 255);
-	gfx.PutPixel(97, 100, 255, 255, 255);
-	gfx.PutPixel(96, 100, 255, 255, 255);
-	gfx.PutPixel(95, 100, 255, 255, 255);
-	gfx.PutPixel(94, 100, 255, 255, 255);
-	gfx.PutPixel(93, 100, 255, 255, 255);
-	gfx.PutPixel(92, 100, 255, 255, 255);
+	//H character
+	gfx.PutPixel(x + 10, y + 10, red, green, blue);//Horizontal line
+	gfx.PutPixel(x + 9, y + 10, red, green, blue);
+	gfx.PutPixel(x + 8, y + 10, red, green, blue);
+	gfx.PutPixel(x + 7, y + 10, red, green, blue);
+	gfx.PutPixel(x + 6, y + 10, red, green, blue);
+	gfx.PutPixel(x + 5, y + 10, red, green, blue);
+	gfx.PutPixel(x + 4, y + 10, red, green, blue);
+	gfx.PutPixel(x + 3, y + 10, red, green, blue);
+	gfx.PutPixel(x + 2, y + 10, red, green, blue);
+	gfx.PutPixel(x + 10, y + 11, red, green, blue);//vertical line right
+	gfx.PutPixel(x + 10, y + 12, red, green, blue);
+	gfx.PutPixel(x + 10, y + 13, red, green, blue);
+	gfx.PutPixel(x + 10, y + 14, red, green, blue);
+	gfx.PutPixel(x + 10, y + 15, red, green, blue);
+	gfx.PutPixel(x + 10, y + 16, red, green, blue);
+	gfx.PutPixel(x + 10, y + 17, red, green, blue);
+	gfx.PutPixel(x + 10, y + 18, red, green, blue);
+	gfx.PutPixel(x + 10, y + 19, red, green, blue);
+	gfx.PutPixel(x + 10, y + 10, red, green, blue);
+	gfx.PutPixel(x + 10, y + 9, red, green, blue);
+	gfx.PutPixel(x + 10, y + 8, red, green, blue);
+	gfx.PutPixel(x + 10, y + 7, red, green, blue);
+	gfx.PutPixel(x + 10, y + 6, red, green, blue);
+	gfx.PutPixel(x + 10, y + 5, red, green, blue);
+	gfx.PutPixel(x + 10, y + 4, red, green, blue);
+	gfx.PutPixel(x + 10, y + 3, red, green, blue);
+	gfx.PutPixel(x + 10, y + 2, red, green, blue);
+	gfx.PutPixel(x + 2, y + 11, red, green, blue);//vertical line Left
+	gfx.PutPixel(x + 2, y + 12, red, green, blue);
+	gfx.PutPixel(x + 2, y + 13, red, green, blue);
+	gfx.PutPixel(x + 2, y + 14, red, green, blue);
+	gfx.PutPixel(x + 2, y + 15, red, green, blue);
+	gfx.PutPixel(x + 2, y + 16, red, green, blue);
+	gfx.PutPixel(x + 2, y + 17, red, green, blue);
+	gfx.PutPixel(x + 2, y + 18, red, green, blue);
+	gfx.PutPixel(x + 2, y + 19, red, green, blue);
+	gfx.PutPixel(x + 2, y + 10, red, green, blue);
+	gfx.PutPixel(x + 2, y + 9, red, green, blue);
+	gfx.PutPixel(x + 2, y + 8, red, green, blue);
+	gfx.PutPixel(x + 2, y + 7, red, green, blue);
+	gfx.PutPixel(x + 2, y + 6, red, green, blue);
+	gfx.PutPixel(x + 2, y + 5, red, green, blue);
+	gfx.PutPixel(x + 2, y + 4, red, green, blue);
+	gfx.PutPixel(x + 2, y + 3, red, green, blue);
+	gfx.PutPixel(x + 2, y + 2, red, green, blue);
 
-	//vertical line right
-	gfx.PutPixel(100, 101, 255, 255, 255);
-	gfx.PutPixel(100, 102, 255, 255, 255);
-	gfx.PutPixel(100, 103, 255, 255, 255);
-	gfx.PutPixel(100, 104, 255, 255, 255);
-	gfx.PutPixel(100, 105, 255, 255, 255);
-	gfx.PutPixel(100, 106, 255, 255, 255);
-	gfx.PutPixel(100, 107, 255, 255, 255);
-	gfx.PutPixel(100, 108, 255, 255, 255);
-	gfx.PutPixel(100, 109, 255, 255, 255);
-	gfx.PutPixel(100, 100, 255, 255, 255);
-	gfx.PutPixel(100, 99, 255, 255, 255);
-	gfx.PutPixel(100, 98, 255, 255, 255);
-	gfx.PutPixel(100, 97, 255, 255, 255);
-	gfx.PutPixel(100, 96, 255, 255, 255);
-	gfx.PutPixel(100, 95, 255, 255, 255);
-	gfx.PutPixel(100, 94, 255, 255, 255);
-	gfx.PutPixel(100, 93, 255, 255, 255);
-	gfx.PutPixel(100, 92, 255, 255, 255);
-
-	//vertical line Left
-	gfx.PutPixel(92, 101, 255, 255, 255);
-	gfx.PutPixel(92, 102, 255, 255, 255);
-	gfx.PutPixel(92, 103, 255, 255, 255);
-	gfx.PutPixel(92, 104, 255, 255, 255);
-	gfx.PutPixel(92, 105, 255, 255, 255);
-	gfx.PutPixel(92, 106, 255, 255, 255);
-	gfx.PutPixel(92, 107, 255, 255, 255);
-	gfx.PutPixel(92, 108, 255, 255, 255);
-	gfx.PutPixel(92, 109, 255, 255, 255);
-	gfx.PutPixel(92, 100, 255, 255, 255);
-	gfx.PutPixel(92, 99, 255, 255, 255);
-	gfx.PutPixel(92, 98, 255, 255, 255);
-	gfx.PutPixel(92, 97, 255, 255, 255);
-	gfx.PutPixel(92, 96, 255, 255, 255);
-	gfx.PutPixel(92, 95, 255, 255, 255);
-	gfx.PutPixel(92, 94, 255, 255, 255);
-	gfx.PutPixel(92, 93, 255, 255, 255);
-	gfx.PutPixel(92, 92, 255, 255, 255);
-
-	gfx.PutPixel(110, 94, 255, 255, 255);
-	gfx.PutPixel(110, 95, 255, 255, 255);
-	gfx.PutPixel(110, 101, 255, 255, 255);
-	gfx.PutPixel(110, 102, 255, 255, 255);
-	gfx.PutPixel(110, 103, 255, 255, 255);
-	gfx.PutPixel(110, 104, 255, 255, 255);
-	gfx.PutPixel(110, 105, 255, 255, 255);
-	gfx.PutPixel(110, 106, 255, 255, 255);
-	gfx.PutPixel(110, 107, 255, 255, 255);
-	gfx.PutPixel(110, 108, 255, 255, 255);
-	gfx.PutPixel(110, 109, 255, 255, 255);
-	gfx.PutPixel(110, 100, 255, 255, 255);
+	// lower case I character
+	gfx.PutPixel(x + 10 + 10, y + 4, red, green, blue);//Period
+	gfx.PutPixel(x + 10 + 10, y + 12, red, green, blue);//i
+	gfx.PutPixel(x + 10 + 10, y + 13, red, green, blue);//i
+	gfx.PutPixel(x + 10 + 10, y + 14, red, green, blue);//i
+	gfx.PutPixel(x + 10 + 10, y + 15, red, green, blue);//i
+	gfx.PutPixel(x + 10 + 10, y + 16, red, green, blue);//i
+	gfx.PutPixel(x + 10 + 10, y + 17, red, green, blue);//i
+	gfx.PutPixel(x + 10 + 10, y + 18, red, green, blue);//i
+	gfx.PutPixel(x + 10 + 10, y + 19, red, green, blue);//i
 }
