@@ -5,6 +5,7 @@
 #                                                                              #
 ##############################################################################*/
 #include "MainWindow.h"
+#include "EventHandler.h"
 #include "Game.h"
 
 bool doOnce = false;
@@ -29,6 +30,18 @@ void Game::Go()
 	UpdateModel();
 	ComposeFrame();
 	gfx.EndFrame();
+
+	struct A : EventHandler<Mouse>
+	{
+		void handle(Mouse* e) override
+		{
+			OutputDebugStringA("Event Handled\n");
+		}
+	}_A;
+
+	Mouse Event;
+	if (wnd.mouse.RightIsPressed())  //otherwise it triggers constantly
+		_A.handle(&Event);
 
 	if (wnd.kbd.KeyIsPressed(VK_UP) || wnd.kbd.KeyIsPressed(VK_DOWN) || wnd.mouse.LeftIsPressed() || wnd.mouse.RightIsPressed())
 	{

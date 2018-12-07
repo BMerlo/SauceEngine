@@ -5,11 +5,11 @@
 #                                                                              #
 ##############################################################################*/
 #pragma once
-#include "ChiliWin.h"
+#include "SauceWin.h"
 #include "Graphics.h"
 #include "Keyboard.h"
 #include "Mouse.h"
-#include "ChiliException.h"
+#include "SauceException.h"
 #include <string>
 
 // for granting special access to hWnd only for Graphics constructor
@@ -28,10 +28,10 @@ protected:
 class MainWindow : public HWNDKey
 {
 public:
-	class Exception : public ChiliException
+	class Exception : public SauceException
 	{
 	public:
-		using ChiliException::ChiliException;
+		using SauceException::SauceException;
 		virtual std::wstring GetFullMessage() const override { return GetNote() + L"\nAt: " + GetLocation(); }
 		virtual std::wstring GetExceptionType() const override { return L"Windows Exception"; }
 	};

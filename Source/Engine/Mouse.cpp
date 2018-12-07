@@ -32,6 +32,7 @@ bool Mouse::RightIsPressed() const
 	return rightIsPressed;
 }
 
+
 bool Mouse::IsInWindow() const
 {
 	return isInWindow;

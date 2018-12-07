@@ -7,9 +7,10 @@
 #include "MainWindow.h"
 #include "Resource.h"
 #include "Graphics.h"
-#include "ChiliException.h"
+#include "SauceException.h"
 #include "Game.h"
 #include <assert.h>
+//
 
 MainWindow::MainWindow( HINSTANCE hInst,wchar_t * pArgs )
 	:
