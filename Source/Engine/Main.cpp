@@ -8,9 +8,17 @@
 #include "Game.h"
 #include "ChiliException.h"
 #include "Objects/HardwareChecks.cpp"
+#include "sol.hpp"
 
 int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR pArgs, INT)
 {
+	sol::state lua;
+
+	lua["message"] = [](const std::string& msg) {
+		MessageBoxA(nullptr, msg.c_str(), "Lua Message", MB_OK);
+	};
+
+	lua.do_string("message('Howdy, from Lua!')");
 
 	//Checking window uniqueness 
 	HANDLE ghMutex;
