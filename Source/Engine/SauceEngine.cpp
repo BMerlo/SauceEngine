@@ -9,6 +9,7 @@
 #include "SauceException.h"
 #include "Objects/HardwareChecks.cpp"
 #include "sol.hpp"
+#include <string>
 
 int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR pArgs, INT)
 {
@@ -45,15 +46,14 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR pArgs, INT)
 	if (result == WAIT_OBJECT_0)
 	{
 		//main code here    
-
+		
 		sol::state lua;
 
 		lua["message"] = [](const std::string& msg) {
 			MessageBoxA(nullptr, msg.c_str(), "Lua Message", MB_OK);
 		};
-
 		lua.do_string("message('Howdy, from Lua!')");
-
+		
 
 		CheckRAM();
 		int ten = 0;
@@ -62,6 +62,18 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR pArgs, INT)
 		hardwareResult = CheckHDDHardware();
 		if (hardwareResult == 0)
 			return 1;
+
+		luaopen_base(lua);
+		string outmsg = lua.do_file("luatest.txt");
+
+		OutputDebugStringA("Lua---------------------------------\n");
+		OutputDebugStringA(outmsg.c_str());
+		OutputDebugStringA("\n");
+
+		string outmsg2 = lua.do_string("'Lua is not fun'");
+		OutputDebugStringA(outmsg2.c_str());
+		OutputDebugStringA("\nLua---------------------------------\n");
+		
 
 		try
 		{
